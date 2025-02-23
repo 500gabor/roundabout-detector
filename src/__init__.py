@@ -1,2 +1,3 @@
 from .source_reader import read_database, read_binary_file
 from .data_processor import check_missing_database_data, filter_invalid_timestamps, filter_gps_errors
+from .interpolate_data import interpolate_missing_records
