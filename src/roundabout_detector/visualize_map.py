@@ -2,7 +2,7 @@ import folium
 import numpy as np
 import webbrowser
 import os
-from .utils import global_logger
+from src.roundabout_detector.utils import global_logger
 
 
 def visualize_map(gdf):

@@ -1,6 +1,6 @@
 import argparse
-from src import (read_database, read_binary_file, check_missing_database_data, filter_invalid_timestamps,
-                 filter_gps_errors, interpolate_missing_records, visualize_map, detect_roundabouts)
+from roundabout_detector import (read_database, read_binary_file, check_missing_database_data,filter_invalid_timestamps,
+                                 filter_gps_errors, interpolate_missing_records, visualize_map, detect_roundabouts)
 
 def main():
     parser = argparse.ArgumentParser(description="Process GPS binary alongside database data and detect roundabouts.")

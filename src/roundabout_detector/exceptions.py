@@ -1,4 +1,4 @@
-from .utils import global_logger
+from src.roundabout_detector.utils import global_logger
 
 
 class TableUnavailableException(Exception):

@@ -1,7 +1,7 @@
 import struct
 import sqlite3
 import pandas as pd
-from .utils import global_logger
+from src.roundabout_detector.utils import global_logger
 from .exceptions import TableUnavailableException
 
 
