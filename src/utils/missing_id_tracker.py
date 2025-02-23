@@ -18,7 +18,7 @@ class MissingIDTracker:
 
     def sort_missing_ids(self):
         """Sorts the list of the missing IDs."""
-        self._missing_ids = sorted(self._missing_ids)
+        self._missing_ids.sort()
 
     def clear_missing_ids(self):
         """Clears the list of missing IDs."""
