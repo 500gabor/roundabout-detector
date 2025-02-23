@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 from itertools import groupby
 from scipy.interpolate import interp1d
-from src.roundabout_detector.utils import global_logger
-from src.roundabout_detector.utils import MissingIDTracker
+from .utils import global_logger
+from .utils import MissingIDTracker
 
 
 def interpolate_missing_records(df):

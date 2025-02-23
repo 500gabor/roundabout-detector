@@ -1,4 +1,4 @@
-from src.roundabout_detector.utils import global_logger, MissingIDTracker
+from .utils import global_logger, MissingIDTracker
 
 
 def check_missing_database_data(packets):
