@@ -99,11 +99,10 @@ def read_binary_file(path, packets):
 
             device_timestamp = round(device_timestamp / 1000)  # Convert nanoseconds epoch to microseconds epoch
 
-            append_data((record_id, synced_timestamp, device_timestamp, latitude, longitude, altitude,
-                         Point(longitude, latitude)))
+            append_data((record_id, synced_timestamp, device_timestamp, latitude, longitude, altitude))
 
     global_logger.info(f"Successfully read {len(data)} records from the binary file.")
     global_logger.info("-" * 50)
     return gpd.GeoDataFrame(data, columns=["record_id", "synced_timestamp", "device_timestamp", "latitude",
-                                          "longitude", "altitude", "geometry"])
+                                          "longitude", "altitude"])
 

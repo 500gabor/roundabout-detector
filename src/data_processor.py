@@ -2,7 +2,13 @@ from .utils import global_logger, MissingIDTracker
 
 
 def check_missing_database_data(packets):
-    """Function to check the database whether it has missing packets based on the IDs."""
+    """Function to check the database whether it has missing packets based on the IDs.
+
+    Args:
+        packets(pandas.DataFrame): The data read from the SQLite Database.
+
+    """
+
     global_logger.info("Checking database for missing record_id's.")
 
     missing_id_tracker = MissingIDTracker()
@@ -28,6 +34,7 @@ def filter_invalid_timestamps(gdf):
         gpd.GeoDataFrame: The filtered GeoDataFrame.
 
     """
+
     global_logger.info("Filtering GeoDataFrame for Synchronization errors.")
 
     missing_id_tracker = MissingIDTracker()
@@ -55,12 +62,14 @@ def filter_gps_errors(gdf):
     Args:
         gdf(gpd.GeoDataFrame): The GPS data originally coming from the binary file.
     Returns:
+        gpd.GeoDataFrame: The filtered GeoDataFrame.
 
     """
+
     def log_removed_rows(row):
         global_logger.error(f"[ERROR] GPS Error: Removed row: {row['record_id']} "
                             f"with latitude: {row['latitude']}, longitude: {row['longitude']}")
-        missing_id_tracker.add_missing_id(row['record_id'])
+        missing_id_tracker.add_missing_id(int(row['record_id']))
 
     global_logger.info("Filtering GPS Errors.")
     missing_id_tracker = MissingIDTracker()
@@ -88,6 +97,7 @@ def filter_gps_errors(gdf):
     problematic_rows = [index for index in problematic_rows if index - 1 in problematic_rows]
     dropped_records = gdf.loc[problematic_rows, ["record_id", "latitude", "longitude"]].to_records(index=False).tolist()
     gdf_filtered = gdf[~gdf.index.isin(problematic_rows)]
+    gdf_filtered.drop(columns=["lat_diff_next", "lon_diff_next"], inplace=True)
 
     for record_id, lat, lon in dropped_records:
         missing_id_tracker.add_missing_id(record_id)
