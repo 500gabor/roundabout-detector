@@ -64,7 +64,6 @@ def interpolate_missing_records(gdf):
             gdf = pd.concat([gdf, gpd.GeoDataFrame(interpolated_values)], ignore_index=True)
             gdf = gdf.sort_values(by="record_id").reset_index(drop=True)
             interpolated_record_ids.extend(map(int, interpolated_values["record_id"]))
-            print("asd")
         except Exception as error:
             global_logger.error(f"[ERROR] Interpolation error, "
                                 f"failed interpolating record_id range: {from_record_id}, {to_record_id}")
