@@ -1,3 +1,5 @@
+import json
+import os
 import numpy as np
 from shapely import Point
 from .utils import global_logger
@@ -70,7 +72,7 @@ def detect_roundabouts(df):
         window_size = 12
         roundabout_threshold = 420
         global_logger.info(f"Calculating roundabouts using a window size of: {window_size} "
-                           f"and roundabout threshold of: {roundabout_threshold}")
+                           f"and roundabout threshold of: {roundabout_threshold}.")
         df["cumulative_turn"] = df["bearing_change"].rolling(window=window_size, min_periods=window_size).sum()
         df["roundabout"] = df["cumulative_turn"] > roundabout_threshold
         df["roundabout_confirmed"] = df["roundabout"] & df["roundabout"].rolling(window=3, min_periods=3).sum().ge(3)
@@ -78,9 +80,14 @@ def detect_roundabouts(df):
         roundabout_data = df[df["roundabout_confirmed"]][["record_id", "device_timestamp", "latitude", "longitude"]]
         roundabout_data["group"] = (roundabout_data["record_id"].diff() != 1).cumsum()
 
+        json_output = roundabout_data.groupby("group").apply(lambda x: x.drop(columns=["group"]).to_dict(orient="records")).to_dict()
+        file_path = os.path.abspath("../roundabout_data.json")
+        with open(file_path, "w") as json_file:
+            json.dump(json_output, json_file, indent=4)
+
+        global_logger.info(f"Written the roundabout data to {file_path}.")
         global_logger.info(f"Found {max(roundabout_data['group'])} potential roundabouts.")
         global_logger.info("-" * 50)
-
         return roundabout_data
 
     except Exception as error:
