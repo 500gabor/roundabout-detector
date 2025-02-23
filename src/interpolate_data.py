@@ -1,20 +1,19 @@
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 from itertools import groupby
 from scipy.interpolate import interp1d
 from .utils import global_logger
 from .utils import MissingIDTracker
 
 
-def interpolate_missing_records(gdf):
+def interpolate_missing_records(df):
     """Finds the required ranges and interpolates points where there are at least 5 consecutive missing records.
 
     Args:
-        gdf(gpd.GeoDataFrame): The filtered GPS data.
+        df(pd.DataFrame): The filtered GPS data.
 
     Returns:
-        gpd.GeoDataFrame: The GPS data with the interpolated records.
+        pd.DataFrame: The GPS data with the interpolated records.
     """
 
     def find_consecutive_ranges(nums, min_length=5):
@@ -45,12 +44,12 @@ def interpolate_missing_records(gdf):
     missing_ids = missing_id_tracker.get_missing_ids()
 
     consecutive_ranges = find_consecutive_ranges(missing_ids, min_length=5)
-    columns_to_interpolate = gdf.columns
+    columns_to_interpolate = df.columns
 
     interpolated_record_ids = []
     for from_record_id, to_record_id in consecutive_ranges:
         try:
-            df_subset = gdf[gdf["record_id"].isin([from_record_id - 1, to_record_id + 1])].set_index("record_id")
+            df_subset = df[df["record_id"].isin([from_record_id - 1, to_record_id + 1])].set_index("record_id")
             record_ids = np.arange(from_record_id, to_record_id + 1)  # Exclude from_record_id and to_record_id
 
             interpolated_values = {"record_id": record_ids}
@@ -61,8 +60,8 @@ def interpolate_missing_records(gdf):
                 interpolator = interp1d([from_record_id - 1, to_record_id + 1], df_subset[col].values, kind="linear")
                 interpolated_values[col] = interpolator(record_ids)
 
-            gdf = pd.concat([gdf, gpd.GeoDataFrame(interpolated_values)], ignore_index=True)
-            gdf = gdf.sort_values(by="record_id").reset_index(drop=True)
+            df = pd.concat([df, pd.DataFrame(interpolated_values)], ignore_index=True)
+            df = df.sort_values(by="record_id").reset_index(drop=True)
             interpolated_record_ids.extend(map(int, interpolated_values["record_id"]))
         except Exception as error:
             global_logger.error(f"[ERROR] Interpolation error, "
@@ -74,5 +73,5 @@ def interpolate_missing_records(gdf):
         global_logger.info("Done interpolating consecutive ranges.")
         global_logger.info("-" * 50)
 
-    return gdf
+    return df
 

@@ -1,8 +1,6 @@
 import struct
 import sqlite3
 import pandas as pd
-import geopandas as gpd
-from shapely.geometry import Point
 from .utils import global_logger
 from .exceptions import TableUnavailableException
 
@@ -64,7 +62,7 @@ def read_binary_file(path, packets):
         packets(pandas.DataFrame): The data from the Packet table, read from the database stored in a Pandas DataFrame.
 
     Returns:
-        geopandas.GeoDataFrame: A GeoDataFrame, which stores the processed data from the binary file.
+        pd.DataFrame: A DataFrame, which stores the processed data from the binary file.
     """
 
     header_format = 'IIQ'
@@ -103,6 +101,6 @@ def read_binary_file(path, packets):
 
     global_logger.info(f"Successfully read {len(data)} records from the binary file.")
     global_logger.info("-" * 50)
-    return gpd.GeoDataFrame(data, columns=["record_id", "synced_timestamp", "device_timestamp", "latitude",
+    return pd.DataFrame(data, columns=["record_id", "synced_timestamp", "device_timestamp", "latitude",
                                           "longitude", "altitude"])
 
