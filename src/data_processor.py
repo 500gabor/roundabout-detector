@@ -44,7 +44,7 @@ def filter_invalid_timestamps(gdf):
     for filterable_id, time_diff in zip(sync_errors["record_id"], sync_errors["time_diff"]):
         missing_id_tracker.add_missing_id(filterable_id)
         global_logger.warning(f"[ERROR] Synchronization Error: device_timestamp and synced_timestamp values exceed 15 "
-                              f"\n\tmicroseconds at Record ID: {filterable_id} "
+                              f"\n\tmicroseconds at Record ID: {filterable_id}. Dropping record. "
                               f"Value difference: {time_diff} microseconds")
 
     gdf = gdf[gdf["time_diff"] <= 15]
@@ -55,6 +55,7 @@ def filter_invalid_timestamps(gdf):
     global_logger.info("-" * 50)
 
     return gdf
+
 
 def filter_gps_errors(gdf):
     """Checks for GPS errors, if the jump between GPS coordinates exceed 1 degree or the values are invalid.
