@@ -96,13 +96,13 @@ def filter_gps_errors(gdf):
     problematic_rows = gdf[(gdf["lat_diff_next"] > 1) | (gdf["lon_diff_next"] > 1)].index.tolist()
     problematic_rows = [index for index in problematic_rows if index - 1 in problematic_rows]
     dropped_records = gdf.loc[problematic_rows, ["record_id", "latitude", "longitude"]].to_records(index=False).tolist()
-    gdf_filtered = gdf[~gdf.index.isin(problematic_rows)]
+    gdf_filtered = gdf[~gdf.index.isin(problematic_rows)].copy()
     gdf_filtered.drop(columns=["lat_diff_next", "lon_diff_next"], inplace=True)
 
     for record_id, lat, lon in dropped_records:
         missing_id_tracker.add_missing_id(record_id)
         global_logger.error(f"[ERROR] GPS Error: Found jump in the GPS coordinate values for the record with "
-                            f"Record ID: {record_id}, latitude: {lat}, longitude: {lon}")
+                            f"\n\tRecord ID: {record_id}, latitude: {lat}, longitude: {lon}")
 
     global_logger.info("Filtered GPS Errors.")
     global_logger.info("-" * 50)
