@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 from shapely import Point
-from .utils import global_logger
+from ..utils import global_logger
 
 def detect_roundabouts(df):
     """Function to detect roundabouts based on the lat-lon data.

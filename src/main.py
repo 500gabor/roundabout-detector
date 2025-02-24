@@ -1,8 +1,9 @@
 import argparse
 import sys
 import os
-from roundabout_detector import (read_database, read_binary_file, check_missing_database_data,filter_invalid_timestamps,
-                                 filter_gps_errors, interpolate_missing_records, visualize_map, detect_roundabouts)
+from roundabout_detector import (read_database, read_binary_file, check_missing_database_data,
+                                 filter_invalid_timestamps, filter_gps_errors, interpolate_missing_records,
+                                 detect_roundabouts, visualize_map)
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -41,7 +42,7 @@ def main():
     else:
         print("Map visualization is disabled. Use --visualize argument to enable it.")
 
-    print("Done! For further information check the logs folder!")
+    print("Done! For further information check the logs folder in the root directory!")
 
 if __name__ == "__main__":
     main()

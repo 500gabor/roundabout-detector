@@ -1,8 +1,8 @@
 import struct
 import sqlite3
 import pandas as pd
-from .utils import global_logger
-from .exceptions import TableUnavailableException
+from ..utils import global_logger
+from ..utils import TableUnavailableException
 
 
 def read_database(db_path):

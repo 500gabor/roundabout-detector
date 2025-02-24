@@ -1,4 +1,4 @@
-from .utils import global_logger
+from .logging_config import global_logger
 
 
 class TableUnavailableException(Exception):
