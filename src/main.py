@@ -41,7 +41,7 @@ def main():
     else:
         print("Map visualization is disabled. Use --visualize argument to enable it.")
 
-    print("Done! For further information check the logs folder!")
+    print("Done! For further information check the logs folder in the root directory!")
 
 if __name__ == "__main__":
     main()
