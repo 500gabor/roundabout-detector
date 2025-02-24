@@ -85,6 +85,7 @@ def detect_roundabouts(df):
         with open(file_path, "w") as json_file:
             json.dump(json_output, json_file, indent=4)
 
+        print(f"Roundabout data saved to: {file_path}")
         global_logger.info(f"Written the roundabout data to {file_path}.")
         global_logger.info(f"Found {max(roundabout_data['group'])} potential roundabouts.")
         global_logger.info("-" * 50)

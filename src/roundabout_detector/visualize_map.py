@@ -24,6 +24,7 @@ def visualize_map(gdf):
         m.save(file_path)
         webbrowser.open(file_path)
 
+        print(f"Visalization complete! Saved map to: {file_path}.")
         global_logger.info(f"Visalization complete! Saved map to: {file_path}.")
         global_logger.info("-" * 50)
     except Exception as error:
