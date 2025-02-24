@@ -81,6 +81,7 @@ def detect_roundabouts(df):
         roundabout_data["group"] = (roundabout_data["record_id"].diff() != 1).cumsum()
 
         json_output = roundabout_data.groupby("group").apply(lambda x: x.drop(columns=["group"]).to_dict(orient="records")).to_dict()
+        json_output = {f"roundabout_{name}": value for name, value in json_output.items()}
         file_path = os.path.abspath("../roundabout_data.json")
         with open(file_path, "w") as json_file:
             json.dump(json_output, json_file, indent=4)
