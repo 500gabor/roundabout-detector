@@ -1,6 +1,8 @@
+import os
 import logging
 import time
 
+os.makedirs("../logs", exist_ok=True)
 
 logging.basicConfig(
     filename=f"../logs/logfile_{time.strftime('%Y_%m_%d_%Hh%Mm%Ss')}.log",
