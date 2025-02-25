@@ -1,4 +1,5 @@
-from ..utils import global_logger, MissingIDTracker
+from ..utils import global_logger
+from ..models import MissingIDTracker
 
 
 def check_missing_database_data(packets):
